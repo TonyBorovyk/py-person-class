@@ -11,18 +11,14 @@ class Person:
 
 
 def create_person_list(people: list) -> list:
-    people_list = [Person(human["name"], human["age"]) for human in people]
-    for human in people:
-        person = Person.people[human["name"]]
-        for key, value in human.items():
-            if key not in ("name", "age") and value is not None:
-                setattr(person, key, value)
-
-    for person in people_list:
-        if hasattr(person, "wife"):
-            for next_person in people_list:
-                if next_person.name == person.wife:
-                    person.wife = next_person
-                    next_person.husband = person
-
-    return people_list
+    person_list = [Person(person["name"], person["age"]) for person in people]
+    for person in people:
+        if "wife" in person and person["wife"] is not None:
+            man = Person.people[person["name"]]
+            wife = Person.people[person["wife"]]
+            man.wife = wife
+        if "husband" in person and person["husband"] is not None:
+            woman = Person.people[person["name"]]
+            husband = Person.people[person["husband"]]
+            woman.husband = husband
+    return person_list
